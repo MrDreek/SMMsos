@@ -20,3 +20,12 @@ Route::prefix('services')->group(function () {
 Route::prefix('categories')->group(function () {
     Route::get('get','CategoriesController@getCategories')->name('get-category-list');
 });
+
+Route::prefix('order')->group(function () {
+    Route::post('add','OrdersController@add')->name('get-new-order');
+    Route::post('status','OrdersController@status')->name('get-status');
+});
+
+Route::prefix('user')->group(function () {
+    Route::get('balance','UserController@balance')->name('get-balance');
+});
