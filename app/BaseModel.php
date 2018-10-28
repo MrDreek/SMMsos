@@ -14,23 +14,34 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
  */
 class BaseModel extends Eloquent
 {
-    public const TWELVE_HOURS_IN_SECONDS = 43200;
-    public const URL = 'https://dripfeedpanel.com/api/v2';
+    protected const TWELVE_HOURS_IN_SECONDS = 43200;
+
+    protected const BASE_URL = 'https://smmpanel.ru/api';
+
+    protected const STATUS_SUCCESS = 'success';
 
     public $timestamps = false;
 
-    protected static function curlPost($body)
+    protected static function curlPost($url, $addBody = null)
     {
-        $response = Curl::to(self::URL);
+        $key = config('app.api_key');
+        $body = ['api_key' => $key];
+
+        $response = Curl::to(self::BASE_URL . $url);
 
         // если нужен прокси
         if (config('app.proxy')) {
             $response = $response->withProxy(config('app.proxy_url'), config('app.proxy_port'), config('app.proxy_type'), config('app.proxy_username'), config('app.proxy_password'));
         }
 
-        return json_decode($response
+        if ($addBody !== null) {
+            $body = array_merge($body, $addBody);
+        }
+
+        return $response
             ->withData($body)
-            ->post());
+            ->asJson()
+            ->post();
     }
 
     /**

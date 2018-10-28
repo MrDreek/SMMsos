@@ -5,14 +5,11 @@ namespace App;
 
 class User extends BaseModel
 {
+    protected $collection = 'users_collection';
+    private const BALANCE_URL = '/balance/';
+
     public static function getBalance()
     {
-        $key = config('app.api_key');
-        $body = [
-            'key' => $key,
-            'action' => 'balance'
-        ];
-
-        return self::curlPost($body);
+        return self::curlPost(self::BALANCE_URL);
     }
 }

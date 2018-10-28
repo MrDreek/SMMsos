@@ -2,15 +2,27 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\CategoryNameRequest;
+use App\Http\Requests\ServiceIdRequest;
 use App\Http\Resources\ServiceCollection;
 use App\Service;
+use App\ServiceOptions;
 use Illuminate\Routing\Controller;
 
 class ServicesController extends Controller
 {
-    public function getServices(CategoryNameRequest $request)
+    public function getServices(): ServiceCollection
     {
-        return new ServiceCollection(Service::where('category', $request->categoryName)->get());
+        return new ServiceCollection(Service::get());
+    }
+
+    public function loadServiceFromApi()
+    {
+        $response = Service::saveServicesFromApi();
+        return response()->json($response, $response['code']);
+    }
+
+    public function getServiceOption(ServiceIdRequest $request)
+    {
+        return response()->json(ServiceOptions::loadOptionFromApi($request->id), 200);
     }
 }

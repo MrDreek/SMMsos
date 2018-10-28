@@ -5,9 +5,9 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 
 /**
- * @property mixed categoryName
+ * @property mixed id
  */
-class CategoryNameRequest extends FormRequest
+class OrderIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,14 +27,16 @@ class CategoryNameRequest extends FormRequest
     public function rules()
     {
         return [
-            'categoryName' => 'required'
+            'id' => 'required|integer|min:1'
         ];
     }
 
     public function messages()
     {
         return [
-            'categoryName.required' => 'Требуется указать название категории'
+            'id.required' => 'Требуется указать ID заказа',
+            'id.integer' => 'ID заказа должно быть целым чилом',
+            'id.min' => 'ID заказа должно быть положительным',
         ];
     }
 }

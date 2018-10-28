@@ -11,19 +11,18 @@
 |
 */
 
-Route::get('get-data','Api@getData')->name('get-data');
-
 Route::prefix('services')->group(function () {
-    Route::post('get','ServicesController@getServices')->name('get-service-list');
+    Route::get('load','ServicesController@loadServiceFromApi')->name('load-services');
+    Route::get('get','ServicesController@getServices')->name('get-service-list');
+    Route::post('get-service-options','ServicesController@getServiceOption')->name('get-service-options');
 });
 
-Route::prefix('categories')->group(function () {
-    Route::get('get','CategoriesController@getCategories')->name('get-category-list');
-});
 
 Route::prefix('order')->group(function () {
     Route::post('add','OrdersController@add')->name('get-new-order');
+    Route::get('add-order','OrdersController@addOrder')->name('get-order');
     Route::post('status','OrdersController@status')->name('get-status');
+    Route::post('history','OrdersController@history')->name('get-history');
 });
 
 Route::prefix('user')->group(function () {
