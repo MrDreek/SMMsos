@@ -16,6 +16,7 @@ Route::prefix('services')->group(function () {
     Route::get('get','ServicesController@getServices')->name('get-service-list');
     Route::post('get-service-options','ServicesController@getServiceOption')->name('get-service-options');
     Route::get('get-service-name','ServicesController@getServiceNameList')->name('get-name');
+    Route::get('get-service-and-categories','ServicesController@serviceAndCategories')->name('get-categories');
 });
 
 
@@ -24,6 +25,10 @@ Route::prefix('order')->group(function () {
     Route::get('add-order','OrdersController@addOrder')->name('get-order');
     Route::post('status','OrdersController@status')->name('get-status');
     Route::post('history','OrdersController@history')->name('get-history');
+});
+
+Route::prefix('category')->group(function () {
+    Route::get('get','CategoryController@getCategories')->name('get-categories');
 });
 
 Route::prefix('user')->group(function () {
