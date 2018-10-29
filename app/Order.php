@@ -58,6 +58,14 @@ class Order extends BaseModel
 
     public static function createOrder($params)
     {
+        $serviceId = Service::where('name', $params['service_id'])->select(['id'])->get()->toArray();
+
+        if(\count($serviceId) > 1){
+            return ['message' => 'Найдено больше чем одна запись по данному имени!', 'service' => implode(', ', array_column($serviceId, 'id'))];
+        }
+
+        $params['service_id'] = $serviceId[0]['id'];
+
         $userId = $params['user_id'];
         unset($params['user_id']);
 
