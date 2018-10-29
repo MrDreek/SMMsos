@@ -37,4 +37,11 @@ class Service extends BaseModel
 
         return ['message' => $response->desc, 'code' => 404];
     }
+
+    public static function serviceName()
+    {
+        return array_map(function ($item) {
+            return $item['name'];
+        }, self::select(['id', 'name'])->get()->toArray());
+    }
 }

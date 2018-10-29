@@ -25,4 +25,9 @@ class ServicesController extends Controller
     {
         return response()->json(ServiceOptions::loadOptionFromApi($request->id), 200);
     }
+
+    public function getServiceNameList()
+    {
+        return response()->json(Service::serviceName(), 200);
+    }
 }

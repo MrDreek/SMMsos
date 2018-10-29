@@ -15,6 +15,7 @@ Route::prefix('services')->group(function () {
     Route::get('load','ServicesController@loadServiceFromApi')->name('load-services');
     Route::get('get','ServicesController@getServices')->name('get-service-list');
     Route::post('get-service-options','ServicesController@getServiceOption')->name('get-service-options');
+    Route::get('get-service-name','ServicesController@getServiceNameList')->name('get-name');
 });
 
 
