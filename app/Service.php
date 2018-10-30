@@ -44,6 +44,6 @@ class Service extends BaseModel
 
         return array_map(function ($item) {
             return $item['name'];
-        }, self::select(['id', 'name'])->where('catogory_id', $category_id)->orderBy('name')->get()->toArray());
+        }, self::select(['id', 'name'])->where('category_id', $category_id)->orderBy('name')->get()->toArray());
     }
 }
