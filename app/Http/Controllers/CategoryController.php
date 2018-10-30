@@ -11,6 +11,6 @@ class CategoryController extends Controller
 {
     public function getCategories()
     {
-        return new CategoryCollection(Category::all());
+        return new CategoryCollection(Category::select(['name'])->orderBy('name')->get());
     }
 }
