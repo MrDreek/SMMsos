@@ -87,4 +87,23 @@ class Order extends BaseModel
 
         return ['message' => $response->desc, 'code' => 500];
     }
+
+    public static function prepareOrder($params)
+    {
+        $platform_id = Platform::where('name', $params['platform'])->select(['_id'])->firstOrFail()->_id;
+        $category_id = Category::where('platform_id', $platform_id)
+            ->where('name', $params['category'])
+            ->select(['_id'])
+            ->firstOrFail()
+            ->_id;
+
+        $service = Service::where('category_id', $category_id)
+            ->where('name', $params['service'])
+            ->firstOrFail();
+
+        return [
+            'service_id' => $service->id,
+            'all_price' => $service->price / 1000 * (int)$params['count']
+        ];
+    }
 }

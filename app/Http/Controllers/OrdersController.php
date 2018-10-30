@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\AllEntitiesRequest;
 use App\Http\Requests\OrderIdRequest;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\UserIdRequest;
@@ -12,6 +13,11 @@ use Illuminate\Routing\Controller;
 
 class OrdersController extends Controller
 {
+    public function prepare(AllEntitiesRequest $request)
+    {
+        return response()->json(Order::prepareOrder($request->input()), 200);
+    }
+
     public function add(OrderRequest $request)
     {
         return response()->json(Order::createOrder($request->input()), 200);
