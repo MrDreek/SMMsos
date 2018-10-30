@@ -25,7 +25,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'user_id' => 'required|string',
-            'service_id' => 'required|exists:services_collection,name',
+            'service' => 'required|exists:services_collection,name',
             'count' => 'required|integer|min:1',
             'url' => 'required|string',
             'options' => 'nullable'
@@ -45,7 +45,6 @@ class OrderRequest extends FormRequest
             'count.min' => 'Количество быть положительным',
             'url.required' => 'Требуется указать url',
             'url.integer' => 'url должен быть строкой',
-            'options.integer' => 'url должен быть строкой'
         ];
     }
 }

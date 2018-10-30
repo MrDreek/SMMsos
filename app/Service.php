@@ -38,10 +38,12 @@ class Service extends BaseModel
         return ['message' => $response->desc, 'code' => 404];
     }
 
-    public static function serviceName()
+    public static function serviceName($category)
     {
+        $category_id = Category::select(['id'])->where('name', $category)->first()->id;
+
         return array_map(function ($item) {
             return $item['name'];
-        }, self::select(['id', 'name'])->get()->toArray());
+        }, self::select(['name'])->where('catogory_id', $category_id)->get()->toArray());
     }
 }

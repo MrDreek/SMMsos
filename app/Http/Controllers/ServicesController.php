@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CategoryName;
 use App\Http\Requests\ServiceIdRequest;
 use App\Http\Resources\ServiceCollection;
 use App\Service;
@@ -26,8 +27,8 @@ class ServicesController extends Controller
         return response()->json(ServiceOptions::loadOptionFromApi($request->id), 200);
     }
 
-    public function getServiceNameList()
+    public function getServiceNameList(CategoryName $request)
     {
-        return response()->json(Service::serviceName(), 200);
+        return response()->json(Service::serviceName($request->name), 200);
     }
 }
