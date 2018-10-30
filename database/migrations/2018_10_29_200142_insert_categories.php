@@ -19,13 +19,15 @@ class InsertCategories extends Migration
         foreach ($json->data as $key => $item) {
             $category = Category::where('name', trim($item[4]))->first() ?? new Category;
             $category->name = $item[4];
-            $category->save();
+            if (!$category->save()) {
+                echo 'Категорий не сохранена!';
+            }
             $service = \App\Service::where('url', trim($item[1]))->firstOrFail();
-            $service->catogory_id = $category->_id;
-            $service->save();
+            $service->category_id = $category->_id;
+            if (!$service->save()) {
+                echo 'Сервис не сохранена!';
+            }
         }
-
-
     }
 
     /**
