@@ -11,11 +11,6 @@ use Illuminate\Routing\Controller;
 
 class ServicesController extends Controller
 {
-    public function getServices(): ServiceCollection
-    {
-        return new ServiceCollection(Service::get());
-    }
-
     public function loadServiceFromApi()
     {
         $response = Service::saveServicesFromApi();
@@ -27,8 +22,8 @@ class ServicesController extends Controller
         return response()->json(ServiceOptions::loadOptionFromApi($request->id), 200);
     }
 
-    public function getServiceNameList(CategoryName $request)
+    public function getServices(CategoryName $request)
     {
-        return response()->json(Service::serviceName($request->name), 200);
+        return new ServiceCollection(Service::filteredCategory($request));
     }
 }

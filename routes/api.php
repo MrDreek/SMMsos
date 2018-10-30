@@ -12,25 +12,26 @@
 */
 
 Route::prefix('services')->group(function () {
-    Route::get('load','ServicesController@loadServiceFromApi')->name('load-services');
-    Route::get('get','ServicesController@getServices')->name('get-service-list');
-    Route::post('get-service-options','ServicesController@getServiceOption')->name('get-service-options');
-    Route::post('get-service-name','ServicesController@getServiceNameList')->name('get-name');
-    Route::get('get-service-and-categories','ServicesController@serviceAndCategories')->name('get-categories');
+    Route::get('load', 'ServicesController@loadServiceFromApi')->name('load-services');
+    Route::post('get', 'ServicesController@getServices')->name('get-services');
+    Route::post('get-service-options', 'ServicesController@getServiceOption')->name('get-service-options');
 });
 
 
 Route::prefix('order')->group(function () {
-    Route::post('add','OrdersController@add')->name('get-new-order');
-    Route::get('add-order','OrdersController@addOrder')->name('get-order');
-    Route::post('status','OrdersController@status')->name('get-status');
-    Route::post('history','OrdersController@history')->name('get-history');
+    Route::post('add', 'OrdersController@add')->name('get-new-order');
+    Route::post('status', 'OrdersController@status')->name('get-status');
+    Route::post('history', 'OrdersController@history')->name('get-history');
 });
 
 Route::prefix('category')->group(function () {
-    Route::get('get','CategoryController@getCategories')->name('get-categories');
+    Route::post('get', 'CategoryController@getCategories')->name('get-categories');
+});
+
+Route::prefix('platform')->group(function () {
+    Route::get('get', 'PlatformController@getPlatform')->name('get-platform');
 });
 
 Route::prefix('user')->group(function () {
-    Route::get('balance','UserController@balance')->name('get-balance');
+    Route::get('balance', 'UserController@balance')->name('get-balance');
 });

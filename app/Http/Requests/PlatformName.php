@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property mixed name
  */
-class CategoryName extends FormRequest
+class PlatformName extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,18 +27,15 @@ class CategoryName extends FormRequest
     public function rules()
     {
         return [
-            'category' => 'required|exists:category_collection,name',
-            'platform' => 'required|exists:platform_collection,name',
+            'name' => 'required|exists:platform_collection,name',
         ];
     }
 
     public function messages()
     {
         return [
-            'category.required' => 'Требуется указать имя категории',
-            'category.exists' => 'Имя категории не найдено!',
-            'platform.required' => 'Требуется указать платформу',
-            'platform.exists' => 'Платформа не найдена!',
+            'name.required' => 'Требуется указать название платформы',
+            'name.exists' => 'Неизвестаная платформа!',
         ];
     }
 }
