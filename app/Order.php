@@ -43,9 +43,9 @@ class Order extends BaseModel
         if ($response->type === self::STATUS_SUCCESS) {
 
             $this->service = Service::where('id', $response->data->service_id)->first()->name ?? $response->data->service_id;
-            $this->date_added =  $response->data->date_added ?? null;
-            $this->status =  self::STATUS_LIST[$response->data->status] ?? $response->data->status;
-            $this->url =  $response->data->url ?? null;
+            $this->date_added = $response->data->date_added ?? null;
+            $this->status = self::STATUS_LIST[$response->data->status] ?? $response->data->status;
+            $this->url = $response->data->url ?? null;
 
             if (!$this->save()) {
                 return ['message' => 'Заказ не был сохранён!', 'code' => 500, 'response' => $response];
@@ -58,16 +58,16 @@ class Order extends BaseModel
 
     public static function createOrder($params)
     {
-        $serviceId = Service::where('name', $params['service_id'])->select(['id'])->get()->toArray();
+        $serviceId = Service::where('name', $params['service'])->select(['id'])->get()->toArray();
 
-        if(\count($serviceId) > 1){
+        if (\count($serviceId) > 1) {
             return ['message' => 'Найдено больше чем одна запись по данному имени!', 'service' => implode(', ', array_column($serviceId, 'id'))];
         }
 
         $params['service_id'] = $serviceId[0]['id'];
 
         $userId = $params['user_id'];
-        unset($params['user_id']);
+        unset($params['user_id'], $params['service']);
 
         $response = self::curlPost(self::ADD_URL, $params);
 
