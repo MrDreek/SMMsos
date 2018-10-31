@@ -25,7 +25,7 @@ class OrderRequest extends FormRequest
     {
         return [
             'user_id' => 'required|string',
-            'service' => 'required|exists:services_collection,name',
+            'service_id' => 'required|exists:services_collection,id',
             'count' => 'required|integer|min:1',
             'url' => 'required|string',
             'options' => 'nullable'
@@ -38,8 +38,7 @@ class OrderRequest extends FormRequest
             'user_id.required' => 'Требуется указать ID пользователя',
             'user_id.string' => 'ID пользователя должно быть строкой',
             'service_id.required' => 'Требуется указать ID сервиса',
-            'service_id.integer' => 'ID сервиса должно быть целым чилом',
-            'service_id.min' => 'ID сервиса должно быть положительным',
+            'service_id.exists' => 'ID сервиса не найдено!',
             'count.required' => 'Требуется указать Количество',
             'count.integer' => 'Количество должно быть целым чилом',
             'count.min' => 'Количество быть положительным',

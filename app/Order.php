@@ -103,7 +103,7 @@ class Order extends BaseModel
 
         return [
             'service_id' => $service->id,
-            'all_price' => $service->price / 1000 * (int)$params['count']
+            'price' => $service->price
         ];
     }
 }
