@@ -116,7 +116,8 @@ class Order extends BaseModel
 
         return [
             'service_id' => $service->id,
-            'price' => $service->price
+            'price' => $service->price,
+            'min' => $service->min,
         ];
     }
 }
