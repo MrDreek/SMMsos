@@ -17,7 +17,7 @@ use App\Http\Resources\OrderResource;
 class Order extends BaseModel
 {
     protected $collection = 'orders_collection';
-    protected $hidden = ['_id', 'request_params'];
+//    protected $hidden = ['_id', 'request_params'];
 
     private const ADD_URL = '/add_order/';
     private const STATUS_URL = '/check_status/${x}/';
