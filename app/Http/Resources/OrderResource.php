@@ -13,10 +13,12 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed url
  * @property mixed date_added
  * @property mixed request_params
+ * @property mixed count
  */
 class OrderResource extends JsonResource
 {
     public static $wrap = '';
+
     /**
      * Transform the resource into an array.
      *
@@ -25,21 +27,14 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
-        $response = [
+        return [
             'order_id' => $this->order_id,
-            'price' => $this->price,
+            'date_added' => \Carbon\Carbon::parse($this->date_added)->format('d.m.Y H:i'),
+            'service' => Service::where('id', $this->request_params['service_id'])->first()->name ?? null,
+            'status' => $this->status,
+            'count' => $this->request_params['count'],
+            'url' => $this->request_params['url'],
             'code' => 200
         ];
-
-        if (isset($this->status)) {
-            $response = array_merge($response, [
-                'date_added' => \Carbon\Carbon::parse($this->date_added)->format('d.m.Y H:i'),
-                'service' => Service::where('id', $this->request_params['service_id'])->first()->name ?? null,
-                'status' => $this->status,
-                'url' => $this->request_params['url'],
-            ]);
-        }
-
-        return $response;
     }
 }

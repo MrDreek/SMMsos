@@ -7,7 +7,6 @@ use App\Http\Requests\OrderAnotherIdRequest;
 use App\Http\Requests\OrderIdRequest;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\UserIdRequest;
-use App\Http\Resources\HistoryCollection;
 use App\Http\Resources\OrderResource;
 use App\Order;
 use Illuminate\Routing\Controller;
@@ -31,11 +30,11 @@ class OrdersController extends Controller
 
     public function history(UserIdRequest $request)
     {
-        $orders = Order::where('user_id', $request->userId)->paginate(5);
+        $orders = Order::where('user_id', $request->userId)->orderBy('order_id', 'desc')->paginate(5);
         if (empty($orders->items())) {
             return response()->json(['message' => 'Заказы для данного пользователя не найдены'], 404);
         }
-        return new HistoryCollection($orders);
+        return OrderResource::collection($orders);
     }
 
     public function status(OrderIdRequest $request)
