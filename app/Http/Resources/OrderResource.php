@@ -14,6 +14,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed date_added
  * @property mixed request_params
  * @property mixed count
+ * @property mixed _id
  */
 class OrderResource extends JsonResource
 {
@@ -28,7 +29,7 @@ class OrderResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'order_id' => $this->order_id,
+            'order_id' => $this->order_id ?? $this->_id,
             'date_added' => \Carbon\Carbon::parse($this->date_added)->format('d.m.Y H:i'),
             'service' => Service::where('id', $this->request_params['service_id'])->first()->name ?? null,
             'status' => $this->status,
