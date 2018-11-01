@@ -30,7 +30,7 @@ class OrderResource extends JsonResource
     {
         return [
             'order_id' => $this->order_id ?? $this->_id,
-            'date_added' => \Carbon\Carbon::parse($this->date_added)->format('d.m.Y H:i'),
+            'date_added' => \Carbon\Carbon::parse($this->date_added, 'Europe/Moscow')->format('d.m.Y H:i'),
             'service' => Service::where('id', $this->request_params['service_id'])->first()->name ?? null,
             'status' => $this->status,
             'count' => $this->request_params['count'],
