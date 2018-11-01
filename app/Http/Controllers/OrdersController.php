@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\AllEntitiesRequest;
+use App\Http\Requests\OrderAnotherIdRequest;
 use App\Http\Requests\OrderIdRequest;
 use App\Http\Requests\OrderRequest;
 use App\Http\Requests\UserIdRequest;
@@ -13,12 +14,17 @@ use Illuminate\Routing\Controller;
 
 class OrdersController extends Controller
 {
+    public function beforeAdd(OrderRequest $request)
+    {
+        return response()->json(Order::beforeOrderCheck($request->input()), 200);
+    }
+
     public function prepare(AllEntitiesRequest $request)
     {
         return response()->json(Order::prepareOrder($request->input()), 200);
     }
 
-    public function add(OrderRequest $request)
+    public function add(OrderAnotherIdRequest $request)
     {
         return response()->json(Order::createOrder($request->input()), 200);
     }
@@ -35,7 +41,7 @@ class OrdersController extends Controller
     public function status(OrderIdRequest $request)
     {
         $order = Order::where('order_id', $request->id)->firstOrFail();
-        if (isset($order->status)) {
+        if ($order->status !== 4) {
             return new OrderResource($order);
         }
 

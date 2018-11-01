@@ -7,7 +7,7 @@ use Illuminate\Foundation\Http\FormRequest;
 /**
  * @property mixed id
  */
-class OrderIdRequest extends FormRequest
+class OrderAnotherIdRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -27,7 +27,7 @@ class OrderIdRequest extends FormRequest
     public function rules()
     {
         return [
-            'id' => 'required|exists:orders_collection,order_id'
+            'id' => 'required|exists:orders_collection,_id'
         ];
     }
 
@@ -35,7 +35,7 @@ class OrderIdRequest extends FormRequest
     {
         return [
             'id.required' => 'Требуется указать ID заказа',
-            'id.exists' => 'ID заказа не найдено',
+            'id.exists' => '_ID заказа не найдено',
         ];
     }
 }

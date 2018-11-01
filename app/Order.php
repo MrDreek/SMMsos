@@ -12,6 +12,7 @@ use App\Http\Resources\OrderResource;
  * @property mixed status
  * @property null url
  * @property mixed service
+ * @property array|mixed request_params
  */
 class Order extends BaseModel
 {
@@ -25,10 +26,12 @@ class Order extends BaseModel
     private const PAID_STATUS = 1;
     private const IN_WORK_STATUS = 2;
     private const COMPLETE_STATUS = 3;
+    private const REQUIRED_PAID = 4;
     private const CANCELED_STATUS = 9;
 
     private const STATUS_LIST = [
         self::NEW_STATUS => 'Новый',
+        self::REQUIRED_PAID => 'Ждёт оплаты',
         self::PAID_STATUS => 'Оплачен',
         self::IN_WORK_STATUS => 'В работе',
         self::COMPLETE_STATUS => 'Выполнен',
@@ -56,28 +59,38 @@ class Order extends BaseModel
         return ['message' => $response->desc, 'code' => 500];
     }
 
-    public static function createOrder($params)
+    public static function beforeOrderCheck($params)
     {
-        $serviceId = Service::where('name', $params['service'])->select(['id'])->get()->toArray();
+        $service = Service::where('id', $params['service_id'])->firstOrFail();
 
-        if (\count($serviceId) > 1) {
-            return ['message' => 'Найдено больше чем одна запись по данному имени!', 'service' => implode(', ', array_column($serviceId, 'id'))];
+        if ($service->min === null || $service->min <= (int)$params['count']) {
+            $order = new self;
+            $order->user_id = $params['user_id'];
+            $order->status = self::STATUS_LIST[self::REQUIRED_PAID];
+            $order->request_params = [
+                'service_id' => $params['service_id'],
+                'url' => $params['url'],
+                'count' => $params['count'],
+                'options' => $params['options'] ?? null,
+            ];
+            $order->save();
+
+            return ['message' => 'Заказ создан, Статус: Ждёт Оплаты', 'order_id' => $order->_id];
         }
 
-        $params['service_id'] = $serviceId[0]['id'];
+        return ['message' => 'Для создания заказа требуется указать количество не менее ' . $service->min, 'code' => 400];
+    }
 
-        $userId = $params['user_id'];
-        unset($params['user_id'], $params['service']);
-
-        $response = self::curlPost(self::ADD_URL, $params);
+    public static function createOrder($params)
+    {
+        $order = self::where('_id', $params['id'])->firstOrFail();
+        $response = self::curlPost(self::ADD_URL, $order->request_params);
 
         if ($response->type === self::STATUS_SUCCESS) {
-            $order = new self;
-            $order->user_id = $userId;
             foreach ($response->data as $key => $item) {
                 $order->$key = $item;
-
             }
+            $order->status = self::STATUS_LIST[self::PAID_STATUS];
             if (!$order->save()) {
                 return ['message' => 'Заказ не был сохранён!', 'code' => 500, 'response' => $response];
             }

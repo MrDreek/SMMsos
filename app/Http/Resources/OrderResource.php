@@ -2,6 +2,7 @@
 
 namespace App\Http\Resources;
 
+use App\Service;
 use Illuminate\Http\Resources\Json\JsonResource;
 
 /**
@@ -11,6 +12,7 @@ use Illuminate\Http\Resources\Json\JsonResource;
  * @property mixed status
  * @property mixed url
  * @property mixed date_added
+ * @property mixed request_params
  */
 class OrderResource extends JsonResource
 {
@@ -32,9 +34,9 @@ class OrderResource extends JsonResource
         if (isset($this->status)) {
             $response = array_merge($response, [
                 'date_added' => \Carbon\Carbon::parse($this->date_added)->format('d.m.Y H:i'),
-                'service' => $this->service,
+                'service' => Service::where('id', $this->request_params['service_id'])->first()->name ?? null,
                 'status' => $this->status,
-                'url' => $this->url,
+                'url' => $this->request_params['url'],
             ]);
         }
 
