@@ -13,6 +13,13 @@ use Illuminate\Routing\Controller;
 
 class OrdersController extends Controller
 {
+    public function checkPaid($id)
+    {
+        $order = Order::where('_id', $id)->firstOrFail();
+
+        return response()->json($order->checkPaid(), 200);
+    }
+
     public function beforeAdd(OrderRequest $request)
     {
         return response()->json(Order::beforeOrderCheck($request->input()), 200);

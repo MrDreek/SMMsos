@@ -59,6 +59,20 @@ class Order extends BaseModel
         return ['message' => $response->desc, 'code' => 500];
     }
 
+    public function checkPaid()
+    {
+        if (isset($this->request_params['service_id'])) {
+            $service = Service::where('id', $this->request_params['service_id'])->firstOrFail();
+        }
+
+
+        return [
+            'price' => $service->price ?? $this->price ?? null,
+            'wait_pay' => $this->status === self::STATUS_LIST[self::REQUIRED_PAID],
+            'service' => $service->name ?? $this->service ?? null,
+        ];
+    }
+
     public static function beforeOrderCheck($params)
     {
         $service = Service::where('id', $params['service_id'])->firstOrFail();

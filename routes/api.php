@@ -20,6 +20,7 @@ Route::prefix('services')->group(function () {
 Route::prefix('order')->group(function () {
     Route::post('prepare', 'OrdersController@prepare')->name('order-prepare');
     Route::post('before-add', 'OrdersController@beforeAdd')->name('order-beforeAdd');
+    Route::get('check-paid/{id}', 'OrdersController@checkPaid')->name('check-paid');
     Route::post('add', 'OrdersController@add')->name('get-new-order');
     Route::post('status', 'OrdersController@status')->name('get-status');
     Route::post('history', 'OrdersController@history')->name('get-history');
