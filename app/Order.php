@@ -13,6 +13,7 @@ use App\Http\Resources\OrderResource;
  * @property null url
  * @property mixed service
  * @property array|mixed request_params
+ * @property mixed created_at
  */
 class Order extends BaseModel
 {
@@ -21,6 +22,8 @@ class Order extends BaseModel
 
     private const ADD_URL = '/add_order/';
     private const STATUS_URL = '/check_status/${x}/';
+
+    public $timestamps = true;
 
     private const NEW_STATUS = 0;
     private const PAID_STATUS = 1;
@@ -69,6 +72,7 @@ class Order extends BaseModel
         return [
             'price' => $service->price ?? $this->price ?? null,
             'wait_pay' => $this->status === self::STATUS_LIST[self::REQUIRED_PAID],
+            'created_date' => \Carbon\Carbon::parse($this->date_added, 'Europe/Moscow')->format('d.m.Y H:i') ?? \Carbon\Carbon::parse($this->created_at, 'Europe/Moscow')->format('d.m.Y H:i') ?? null,
             'count' => $this->count ?? $this->request_params['count'] ?? null,
             'service' => $service->name ?? $this->service ?? null,
         ];
