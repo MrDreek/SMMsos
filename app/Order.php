@@ -69,6 +69,7 @@ class Order extends BaseModel
         return [
             'price' => $service->price ?? $this->price ?? null,
             'wait_pay' => $this->status === self::STATUS_LIST[self::REQUIRED_PAID],
+            'count' => $this->count ?? $this->request_params['count'] ?? null,
             'service' => $service->name ?? $this->service ?? null,
         ];
     }
