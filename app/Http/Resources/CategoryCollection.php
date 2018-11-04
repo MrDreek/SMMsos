@@ -15,7 +15,7 @@ class CategoryCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return array_merge(['Назад '], array_map(function ($item){
+        return array_merge(['Назад ⏪'], array_map(function ($item){
             return $item['name'];
         }, $this->collection->toArray()));
     }
