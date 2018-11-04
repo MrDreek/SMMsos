@@ -27,7 +27,7 @@ class OrderRequest extends FormRequest
             'user_id' => 'required|string',
             'service_id' => 'required|exists:services_collection,id',
             'count' => 'required|integer|min:1',
-            'url' => 'required|string',
+            'url' => 'required|url',
             'options' => 'nullable'
         ];
     }
@@ -43,7 +43,7 @@ class OrderRequest extends FormRequest
             'count.integer' => 'Количество должно быть целым чилом',
             'count.min' => 'Количество быть положительным',
             'url.required' => 'Требуется указать url',
-            'url.integer' => 'url должен быть строкой',
+            'url.url' => 'адрес должен быть URL\'ом',
         ];
     }
 }

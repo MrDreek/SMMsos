@@ -16,8 +16,8 @@ class ServiceCollection extends ResourceCollection
      */
     public function toArray($request)
     {
-        return array_map(function ($item){
+        return array_merge(['Назад ⏪&#9194;'],array_map(function ($item){
             return $item['name'];
-        }, $this->collection->toArray());
+        }, $this->collection->toArray()));
     }
 }
