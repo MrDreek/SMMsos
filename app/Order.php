@@ -66,8 +66,10 @@ class Order extends BaseModel
     {
         if (isset($this->request_params['service_id'])) {
             $service = Service::where('id', $this->request_params['service_id'])->firstOrFail();
+            $allPrice = $service->price * $this->request_params['count'];
         }
 
+        $balance = User::getBalance()->data->balance;
 
         return [
             'price' => $service->price ?? $this->price ?? null,
@@ -75,6 +77,8 @@ class Order extends BaseModel
             'created_date' => \Carbon\Carbon::parse($this->date_added, 'Europe/Moscow')->format('d.m.Y H:i') ?? \Carbon\Carbon::parse($this->created_at, 'Europe/Moscow')->format('d.m.Y H:i') ?? null,
             'count' => $this->count ?? $this->request_params['count'] ?? null,
             'service' => $service->name ?? $this->service ?? null,
+            'allPrice' => $allPrice ?? null,
+            'balance' => (int)$balance >= (int)$allPrice
         ];
     }
 
@@ -94,7 +98,16 @@ class Order extends BaseModel
             ];
             $order->save();
 
-            return ['message' => 'Заказ создан, Статус: Ждёт Оплаты', 'order_id' => $order->_id];
+
+            $balance = User::getBalance()->data->balance;
+            $allPrice = $service->price * $order->request_params['count'];
+
+            return [
+                'message' => 'Заказ создан, Статус: Ждёт Оплаты',
+                'order_id' => $order->_id,
+                'allPrice' => $allPrice,
+                'balance' => (int)$balance >= (int)$allPrice
+            ];
         }
 
         return ['message' => 'Для создания заказа требуется указать количество не менее ' . $service->min, 'code' => 400];

@@ -28,11 +28,14 @@ class OrderResource extends JsonResource
      */
     public function toArray($request)
     {
+        $service = Service::where('id', $this->request_params['service_id'])->first();
+        $date_added = $this->date ?? $this->created_at ?? null;
         return [
             'order_id' => $this->order_id ?? $this->_id,
-            'date_added' => \Carbon\Carbon::parse($this->date_added, 'Europe/Moscow')->format('d.m.Y H:i'),
-            'service' => Service::where('id', $this->request_params['service_id'])->first()->name ?? null,
+            'date_added' => $date_added !== null ? \Carbon\Carbon::parse($date_added, 'Europe/Moscow')->format('d.m.Y H:i') : null,
+            'service' => $service->name ?? null,
             'status' => $this->status,
+            'price' => $this->price ?? null,
             'count' => $this->request_params['count'],
             'url' => $this->request_params['url'],
             'code' => 200

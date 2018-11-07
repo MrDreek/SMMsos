@@ -15,7 +15,7 @@ class OrdersController extends Controller
 {
     public function checkPaid($id)
     {
-        $order = Order::where('_id', $id)->firstOrFail();
+        $order = Order::where('_id', $id)->orWhere('order_id', (int)$id)->firstOrFail();
 
         return response()->json($order->checkPaid(), 200);
     }
