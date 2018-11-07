@@ -35,7 +35,7 @@ class OrderResource extends JsonResource
             'date_added' => $date_added !== null ? \Carbon\Carbon::parse($date_added, 'Europe/Moscow')->format('d.m.Y H:i') : null,
             'service' => $service->name ?? null,
             'status' => $this->status,
-            'price' => $this->price ?? null,
+            'price' => $service->price ?? null,
             'count' => $this->request_params['count'],
             'url' => $this->request_params['url'],
             'code' => 200
