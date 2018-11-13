@@ -13,6 +13,7 @@
 
 Route::prefix('services')->group(function () {
     Route::get('load', 'ServicesController@loadServiceFromApi')->name('load-services');
+    Route::get('clear', 'ServicesController@clearAll')->name('clear');
     Route::post('get', 'ServicesController@getServices')->name('get-services');
     Route::post('get-service-options', 'ServicesController@getServiceOption')->name('get-service-options');
 });
