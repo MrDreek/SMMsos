@@ -50,6 +50,8 @@ class Service extends BaseModel
                 $service->url = $item->url;
                 $service->group_id = $item->group_id;
                 $service->group_name = $item->group_name;
+                $service->price = $item->price;
+                $service->min = $item->min;
                 if (!$service->save()) {
                     echo 'Сервис не сохранена!';
                 }
