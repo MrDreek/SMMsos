@@ -43,6 +43,10 @@ class Order extends BaseModel
 
     public function getStatus()
     {
+        if ($this->status === self::STATUS_LIST[self::REQUIRED_PAID] || $this->status === self::STATUS_LIST[self::COMPLETE_STATUS]) {
+            return true;
+        }
+
         $url = str_replace('${x}', $this->order_id, self::STATUS_URL);
         $response = self::curlPost($url);
 
@@ -59,6 +63,11 @@ class Order extends BaseModel
 
             return true;
         }
+
+        if ($response->desc === 'Заказ не найден') {
+            return false;
+        }
+
         return ['message' => $response->desc, 'code' => 500];
     }
 

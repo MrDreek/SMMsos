@@ -9,7 +9,7 @@ use Jenssegers\Mongodb\Eloquent\Model as Eloquent;
  * App\BaseModel
  *
  * @property mixed updated_at
- * @property-read mixed $id
+ * @property mixed $id
  * @mixin \Eloquent
  */
 class BaseModel extends Eloquent

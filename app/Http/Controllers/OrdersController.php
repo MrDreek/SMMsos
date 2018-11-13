@@ -37,10 +37,19 @@ class OrdersController extends Controller
 
     public function history(UserIdRequest $request)
     {
-        $orders = Order::where('user_id', $request->userId)->orderBy('_id', 'desc')->paginate(5);
+        $orders = Order::where('user_id', $request->userId)->orderBy('_id', 'desc')->paginate(10);
         if (empty($orders->items())) {
             return response()->json(['message' => 'Заказы для данного пользователя не найдены'], 404);
         }
+
+        /** @var Order $order */
+        foreach ($orders as $order) {
+            $statusCheck = $order->getStatus();
+            if (\is_array($statusCheck)) {
+                return $statusCheck;
+            }
+        }
+
         return OrderResource::collection($orders);
     }
 
