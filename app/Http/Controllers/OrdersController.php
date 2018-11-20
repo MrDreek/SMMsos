@@ -9,6 +9,7 @@ use App\Http\Requests\OrderRequest;
 use App\Http\Requests\UserIdRequest;
 use App\Http\Resources\OrderResource;
 use App\Order;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Routing\Controller;
 
 class OrdersController extends Controller
@@ -50,7 +51,10 @@ class OrdersController extends Controller
             }
         }
 
-        return OrderResource::collection($orders);
+        $paginate = $orders->sortBy('_id');
+        $paginate = new LengthAwarePaginator($paginate, $orders->total(), $orders->perPage());
+
+        return OrderResource::collection($paginate);
     }
 
     public function status(OrderIdRequest $request)
